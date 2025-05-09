@@ -1,0 +1,308 @@
+---
+// src/pages/rooms/camera-arancione.astro
+// Detail page for Camera Arancione - FIXED img tags
+
+import Layout from '../../layouts/Layout.astro'; // Adjust path based on directory structure
+
+// --- Room Specific Data ---
+const room = {
+    name: "Camera Arancione",
+    title: "Camera Arancione | RediRomaBnB",
+    description: "Discover the bright and welcoming Camera Arancione at RediRomaBnB, a comfortable double room perfect for your Rome visit.",
+    longDescription: "Immerse yourself in the cheerful ambiance of Camera Arancione. This beautifully appointed double room features warm orange accents, modern furnishings, and large windows that fill the space with natural light. It's an ideal retreat after a day exploring the vibrant streets of Rome.",
+    images: [
+        'https://placehold.co/800x500/FF8C00/FFFFFF?text=Arancione+Main',
+        'https://placehold.co/400x300/FFA07A/31343C?text=Arancione+Detail+1',
+        'https://placehold.co/400x300/FFDAB9/31343C?text=Arancione+Detail+2',
+        'https://placehold.co/400x300/FFE4B5/31343C?text=Arancione+Bathroom'
+    ],
+    priceIndicator: "From €110 / night",
+    occupancy: {
+        max: 2,
+        text: "Sleeps 2 Adults"
+    },
+    size: {
+        value: 18, // Square meters
+        text: "Approx. 18 m²"
+    },
+    amenities: [
+        'Queen Size Bed (or Two Twins on request)',
+        'Private Ensuite Bathroom with Shower',
+        'Air Conditioning & Heating',
+        'Free High-Speed Wi-Fi',
+        'Flat-screen TV',
+        'Mini-fridge',
+        'Hairdryer',
+        'Complimentary Toiletries',
+        'Desk/Work Area',
+        'Daily Housekeeping'
+    ],
+    bedType: "Queen or Twin",
+    bookingUrl: "#booking-section-room" // Link to the booking section on this page
+};
+
+// --- Detailed Schema.org for HotelRoom ---
+const roomSchema = {
+  "@context": "https://schema.org",
+  "@type": "HotelRoom",
+  "name": room.name,
+  "description": room.longDescription,
+  "image": room.images, // Provide array of images
+  "bed": {
+    "@type": "BedDetails",
+    "typeOfBed": room.bedType,
+    "numberOfBeds": 1 // Or 2 if twins default
+  },
+  "occupancy": {
+    "@type": "QuantitativeValue",
+    "maxValue": room.occupancy.max,
+    "unitText": "persons"
+  },
+  "floorSize": {
+    "@type": "QuantitativeValue",
+    "value": room.size.value,
+    "unitCode": "MTK" // Square Meter code
+  },
+  "amenityFeature": room.amenities.map(amenity => ({
+    "@type": "LocationFeatureSpecification",
+    "name": amenity,
+    "value": true
+  })),
+   "potentialAction": { // Action to book
+     "@type": "ReserveAction",
+     "target": {
+       "@type": "EntryPoint",
+       "urlTemplate": Astro.url.origin + "/#booking-section", // Link to main booking ideally
+       "actionPlatform": [
+         "https://schema.org/DesktopWebPlatform",
+         "https://schema.org/IOSPlatform",
+         "https://schema.org/AndroidPlatform"
+       ]
+     },
+     "priceSpecification": { // Example price spec
+        "@type": "PriceSpecification",
+        "priceCurrency": "EUR",
+        "minPrice": 110 // Match price indicator if possible
+      }
+   }
+  // Add parent LodgingBusiness if needed: "containedInPlace": { "@type": "LodgingBusiness", "name": "RediRomaBnB" }
+};
+---
+
+{/* Using the main Layout component */}
+<Layout title={room.title} description={room.description}>
+    {/* Slot for adding head elements like schema */}
+    <slot name="head">
+        {/* Injecting JSON-LD schema for the room */}
+        <script type="application/ld+json" set:html={JSON.stringify(roomSchema)} />
+    </slot>
+
+    {/* Main article container for the room details */}
+    <article class="room-detail container">
+        {/* Room header with name and price */}
+        <header class="room-header">
+            <h1>{room.name}</h1>
+            <p class="room-price">{room.priceIndicator}</p>
+        </header>
+
+        {/* Image gallery section */}
+        <section class="room-gallery">
+            {/* Main large image */}
+            <div class="gallery-main">
+                {/* FIXED: Added self-closing slash '/>' */}
+                <img src={room.images[0]} alt={`${room.name} - Main View`} loading="eager" />
+            </div>
+            {/* Thumbnail images */}
+            <div class="gallery-thumbnails">
+                {/* Mapping through remaining images for thumbnails */}
+                {room.images.slice(1).map((imgUrl, index) => (
+                    // FIXED: Added self-closing slash '/>'
+                    <img src={imgUrl} alt={`${room.name} - Detail ${index + 1}`} loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x300/EEE/CCC?text=Image';" />
+                ))}
+            </div>
+        </section>
+
+        {/* Room information section (description and amenities) */}
+        <section class="room-info">
+            {/* Room description */}
+            <div class="room-description">
+                <h2>Room Overview</h2>
+                <p>{room.longDescription}</p>
+                <ul>
+                    <li><strong>Occupancy:</strong> {room.occupancy.text}</li>
+                    <li><strong>Size:</strong> {room.size.text}</li>
+                    <li><strong>Bed Type:</strong> {room.bedType}</li>
+                </ul>
+            </div>
+
+            {/* Room amenities list */}
+            <div class="room-amenities">
+                <h2>Amenities</h2>
+                <ul class="amenities-list">
+                    {/* Mapping through amenities */}
+                    {room.amenities.map(amenity => (
+                        <li><i class="icon-checkmark"></i> {amenity}</li>
+                    ))}
+                </ul>
+            </div>
+        </section>
+
+        {/* Booking call to action section */}
+        <section id="booking-section-room" class="room-booking-cta">
+            <h2>Book Your Stay in {room.name}</h2>
+            <p>Ready to experience Rome from this delightful room? Check availability and book now!</p>
+            {/* Placeholder for the actual booking widget or link */}
+            <div class="booking-widget-placeholder" style="min-height: 100px; border: 1px dashed #ccc; display: flex; align-items: center; justify-content: center; background: #f9f9f9; margin-top: 1rem;">
+                [Link/Widget for Booking Camera Arancione or Main Engine Here]
+            </div>
+            {/* Link back to the main rooms page */}
+            <a href="/rooms" class="back-link">&larr; View All Rooms</a>
+        </section>
+
+    </article>
+</Layout>
+
+{/* Styles for the room detail page */}
+<style>
+    /* Basic checkmark icon using pseudo-element */
+    .icon-checkmark::before { content: '✓'; color: green; margin-right: 8px; font-weight: bold; }
+
+    /* General padding for the room detail container */
+    .room-detail {
+        padding-top: 2rem;
+        padding-bottom: 3rem;
+    }
+    /* Centered header for room name and price */
+    .room-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    .room-header h1 {
+        margin-bottom: 0.25em;
+    }
+    .room-price {
+        font-size: 1.2rem;
+        font-weight: bold;
+        /* Using CSS variable for primary color, defined in Layout.astro */
+        color: var(--color-primary);
+    }
+
+    /* Image Gallery Styles */
+    .room-gallery {
+        margin-bottom: 3rem;
+    }
+    /* Main gallery image styling */
+    .gallery-main img {
+        width: 100%;
+        max-height: 500px; /* Limit height */
+        object-fit: cover; /* Ensure image covers the area */
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* Subtle shadow */
+    }
+    /* Grid layout for thumbnails */
+    .gallery-thumbnails {
+        display: grid;
+        /* Responsive grid: fit as many thumbnails as possible with min width 120px */
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 1rem; /* Spacing between thumbnails */
+    }
+    /* Thumbnail image styling */
+    .gallery-thumbnails img {
+        width: 100%;
+        height: 100px; /* Fixed height for thumbnails */
+        object-fit: cover;
+        border-radius: 4px;
+        cursor: pointer; /* Indicate interactivity (if adding JS for lightbox) */
+        transition: opacity 0.3s ease; /* Fade effect on hover */
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    /* Hover effect for thumbnails */
+    .gallery-thumbnails img:hover {
+        opacity: 0.8;
+    }
+
+    /* Room Info Section (Description & Amenities) */
+    .room-info {
+        display: grid;
+        grid-template-columns: 1fr; /* Stack columns by default (mobile) */
+        gap: 3rem; /* Spacing between description and amenities */
+        margin-bottom: 3rem;
+        background-color: #fdfdfd; /* Slightly off-white background */
+        padding: 2rem;
+        border: 1px solid #eee; /* Light border */
+        border-radius: 8px;
+    }
+    /* Styling for section headings (Room Overview, Amenities) */
+    .room-description h2, .room-amenities h2 {
+        margin-bottom: 1.5rem;
+        font-size: 1.6rem;
+        /* Underline effect using border */
+        border-bottom: 2px solid var(--color-primary);
+        padding-bottom: 0.5rem;
+        display: inline-block; /* Ensure border only spans the text width */
+    }
+    /* List styling for room details (Occupancy, Size, etc.) */
+    .room-description ul {
+        list-style: none; /* Remove default bullets */
+        padding: 0;
+        margin-top: 1rem;
+    }
+    .room-description li {
+        margin-bottom: 0.5rem;
+        font-size: 1.05rem;
+    }
+
+    /* Amenities list styling */
+    .amenities-list {
+        list-style: none;
+        padding: 0;
+        column-count: 1; /* Single column by default */
+        column-gap: 2rem; /* Spacing between columns if multi-column */
+    }
+    .amenities-list li {
+        margin-bottom: 0.75rem;
+        font-size: 1rem;
+        display: flex; /* Align icon and text */
+        align-items: center;
+    }
+
+    /* Booking Call to Action section styling */
+    .room-booking-cta {
+        text-align: center;
+        padding: 2.5rem;
+        /* Using CSS variable for secondary background, defined in Layout.astro or default */
+        background-color: var(--color-background-alt, #f8f5f2); /* Use theme background or fallback */
+        border-radius: 8px;
+        margin-top: 2rem;
+    }
+     .room-booking-cta h2 {
+        margin-bottom: 1rem;
+     }
+     /* Back link styling */
+     .back-link {
+        display: inline-block;
+        margin-top: 1.5rem;
+        /* Using CSS variable for dark text */
+        color: var(--color-text-dark);
+        font-size: 0.9rem;
+     }
+     .back-link:hover {
+        /* Using CSS variable for primary color on hover */
+        color: var(--color-primary);
+        text-decoration: underline;
+     }
+
+
+    /* Responsive Adjustments for medium screens and up */
+    @media (min-width: 768px) {
+        /* Two columns for room info: description wider */
+        .room-info {
+            grid-template-columns: 1.5fr 1fr;
+        }
+        /* Two columns for amenities list */
+        .amenities-list {
+            column-count: 2;
+        }
+    }
+</style>

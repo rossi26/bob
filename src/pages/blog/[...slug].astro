@@ -1,0 +1,27 @@
+---
+// src/pages/blog/[...slug].astro
+// Renders individual blog posts using the layout.
+
+import { type CollectionEntry, getCollection } from 'astro:content';
+import BlogPostLayout from '../../layouts/BlogPostLayout.astro'; // Adjust path
+
+// Generate static paths for all non-draft blog posts
+export async function getStaticPaths() {
+	const posts = await getCollection('blog', ({ data }) => data.draft !== true);
+	return posts.map((post) => ({
+		params: { slug: post.slug }, // The slug is used in the URL
+		props: { post }, // Pass the full post object to the page component
+	}));
+}
+
+// Type the props received from getStaticPaths
+interface Props {
+	post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render(); // Render the Markdown content
+---
+<BlogPostLayout post={post}>
+	<Content /> {/* Pass the rendered Markdown content into the layout's slot */}
+</BlogPostLayout>

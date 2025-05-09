@@ -1,0 +1,146 @@
+---
+// src/pages/rooms/camera-verde.astro
+// Detail page for Camera Verde
+
+import Layout from '../../layouts/Layout.astro'; // Adjust path
+
+// --- Room Specific Data ---
+const room = {
+    name: "Camera Verde",
+    title: "Camera Verde | RediRomaBnB",
+    description: "Relax in the tranquil Camera Verde at RediRomaBnB, featuring calming decor, garden views, and modern amenities.",
+    longDescription: "Escape the city bustle in the serene Camera Verde. Decorated in soothing green tones, this comfortable double room offers peaceful views of our courtyard garden (if applicable, otherwise remove 'garden view'). It provides a restful haven with all the modern conveniences needed for a pleasant stay in Rome.",
+    images: [
+        'https://placehold.co/800x500/2E8B57/FFFFFF?text=Verde+Main+View',
+        'https://placehold.co/400x300/98FB98/31343C?text=Verde+Detail+1',
+        'https://placehold.co/400x300/90EE90/31343C?text=Verde+Window+View',
+        'https://placehold.co/400x300/F0FFF0/31343C?text=Verde+Bathroom'
+    ],
+    priceIndicator: "From €115 / night",
+    occupancy: {
+        max: 2,
+        text: "Sleeps 2 Adults"
+    },
+    size: {
+        value: 19, // Square meters
+        text: "Approx. 19 m²"
+    },
+    amenities: [
+        'Queen Size Bed',
+        'Private Ensuite Bathroom with Shower',
+        'Air Conditioning & Heating',
+        'Free High-Speed Wi-Fi',
+        'Flat-screen TV',
+        'Mini-fridge',
+        'Hairdryer',
+        'Complimentary Toiletries',
+        'Writing Desk',
+        'Garden/Courtyard View (Optional)', // Specify if applicable
+        'Daily Housekeeping'
+    ],
+    bedType: "Queen",
+    bookingUrl: "#booking-section-room"
+};
+
+// --- Detailed Schema.org for HotelRoom ---
+const roomSchema = {
+  "@context": "https://schema.org",
+  "@type": "HotelRoom",
+  "name": room.name,
+  "description": room.longDescription,
+  "image": room.images,
+  "bed": { "@type": "BedDetails", "typeOfBed": room.bedType, "numberOfBeds": 1 },
+  "occupancy": { "@type": "QuantitativeValue", "maxValue": room.occupancy.max, "unitText": "persons" },
+  "floorSize": { "@type": "QuantitativeValue", "value": room.size.value, "unitCode": "MTK" },
+  "amenityFeature": room.amenities.map(amenity => ({ "@type": "LocationFeatureSpecification", "name": amenity, "value": true })),
+  "potentialAction": {
+     "@type": "ReserveAction",
+     "target": { "@type": "EntryPoint", "urlTemplate": Astro.url.origin + "/#booking-section" },
+     "priceSpecification": { "@type": "PriceSpecification", "priceCurrency": "EUR", "minPrice": 115 }
+   }
+};
+---
+
+<Layout title={room.title} description={room.description}>
+    <slot name="head">
+        <script type="application/ld+json" set:html={JSON.stringify(roomSchema)} />
+    </slot>
+
+    <article class="room-detail container">
+        <header class="room-header">
+            <h1>{room.name}</h1>
+            <p class="room-price">{room.priceIndicator}</p>
+        </header>
+
+        <section class="room-gallery">
+            <div class="gallery-main">
+                <img src={room.images[0]} alt={`${room.name} - Main View`} loading="eager">
+            </div>
+            <div class="gallery-thumbnails">
+                {room.images.slice(1).map((imgUrl, index) => (
+                    <img src={imgUrl} alt={`${room.name} - Detail ${index + 1}`} loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/400x300/EEE/CCC?text=Image';">
+                ))}
+            </div>
+        </section>
+
+        <section class="room-info">
+            <div class="room-description">
+                <h2>Room Overview</h2>
+                <p>{room.longDescription}</p>
+                <ul>
+                    <li><strong>Occupancy:</strong> {room.occupancy.text}</li>
+                    <li><strong>Size:</strong> {room.size.text}</li>
+                    <li><strong>Bed Type:</strong> {room.bedType}</li>
+                    {room.amenities.includes('Garden/Courtyard View (Optional)') && <li><strong>View:</strong> Garden/Courtyard</li>}
+                </ul>
+            </div>
+
+            <div class="room-amenities">
+                <h2>Amenities</h2>
+                <ul class="amenities-list">
+                    {room.amenities.map(amenity => (
+                        <li><i class="icon-checkmark"></i> {amenity}</li>
+                    ))}
+                </ul>
+            </div>
+        </section>
+
+        <section id="booking-section-room" class="room-booking-cta">
+            <h2>Book Your Stay in {room.name}</h2>
+            <p>Enjoy tranquility and comfort. Check availability for Camera Verde now!</p>
+            <div class="booking-widget-placeholder" style="min-height: 100px; border: 1px dashed #ccc; display: flex; align-items: center; justify-content: center; background: #f9f9f9; margin-top: 1rem;">
+                [Link/Widget for Booking Camera Verde or Main Engine Here]
+            </div>
+             <a href="/rooms" class="back-link">&larr; View All Rooms</a>
+        </section>
+    </article>
+</Layout>
+
+<style>
+    /* Basic checkmark icon */
+    .icon-checkmark::before { content: '✓'; color: green; margin-right: 8px; font-weight: bold; }
+
+    .room-detail { padding-top: 2rem; padding-bottom: 3rem; }
+    .room-header { text-align: center; margin-bottom: 2rem; }
+    .room-header h1 { margin-bottom: 0.25em; }
+    .room-price { font-size: 1.2rem; font-weight: bold; color: var(--brandPrimary); }
+    .room-gallery { margin-bottom: 3rem; }
+    .gallery-main img { width: 100%; max-height: 500px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    .gallery-thumbnails { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem; }
+    .gallery-thumbnails img { width: 100%; height: 100px; object-fit: cover; border-radius: 4px; cursor: pointer; transition: opacity 0.3s ease; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+    .gallery-thumbnails img:hover { opacity: 0.8; }
+    .room-info { display: grid; grid-template-columns: 1fr; gap: 3rem; margin-bottom: 3rem; background-color: #fdfdfd; padding: 2rem; border: 1px solid #eee; border-radius: 8px; }
+    .room-description h2, .room-amenities h2 { margin-bottom: 1.5rem; font-size: 1.6rem; border-bottom: 2px solid var(--brandPrimary); padding-bottom: 0.5rem; display: inline-block; }
+    .room-description ul { list-style: none; padding: 0; margin-top: 1rem; }
+    .room-description li { margin-bottom: 0.5rem; font-size: 1.05rem; }
+    .amenities-list { list-style: none; padding: 0; column-count: 1; column-gap: 2rem; }
+    .amenities-list li { margin-bottom: 0.75rem; font-size: 1rem; display: flex; align-items: center; }
+    .room-booking-cta { text-align: center; padding: 2.5rem; background-color: var(--brandSecondary, #F5F5DC); border-radius: 8px; margin-top: 2rem; }
+    .room-booking-cta h2 { margin-bottom: 1rem; }
+    .back-link { display: inline-block; margin-top: 1.5rem; color: var(--textDark); font-size: 0.9rem; }
+    .back-link:hover { color: var(--brandPrimary); text-decoration: underline; }
+    @media (min-width: 768px) {
+        .room-info { grid-template-columns: 1.5fr 1fr; }
+        .amenities-list { column-count: 2; }
+    }
+</style>

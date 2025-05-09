@@ -1,0 +1,125 @@
+---
+// src/pages/rooms.astro
+// Lists all available rooms at RediRomaBnB - Updated with specific room names
+
+import Layout from '../layouts/Layout.astro';
+import RoomCard from '../components/RoomCard.astro'; // Reuse the RoomCard component
+
+// --- Updated Mock Data ---
+const allRooms = [
+	{
+		id: 'arancione',
+		name: 'Camera Arancione', // Updated Name
+		imageUrl: 'https://placehold.co/600x400/FF8C00/FFFFFF?text=Camera+Arancione', // Orange theme placeholder
+		priceIndicator: 'From €110', // Example price
+		shortDescription: 'Bright and cheerful double room with warm tones and modern comforts.',
+		features: ['Sleeps 2', 'Ensuite Bathroom', 'Air Conditioning', 'Wi-Fi'],
+		detailUrl: '/rooms/camera-arancione' // Updated URL slug
+	},
+	{
+		id: 'verde',
+		name: 'Camera Verde', // Updated Name
+		imageUrl: 'https://placehold.co/600x400/2E8B57/FFFFFF?text=Camera+Verde', // Green theme placeholder
+		priceIndicator: 'From €115', // Example price
+		shortDescription: 'Relaxing double room with calming green accents and garden views.',
+		features: ['Sleeps 2', 'Ensuite Bathroom', 'Garden View', 'Desk'],
+		detailUrl: '/rooms/camera-verde' // Updated URL slug
+	},
+	{
+		id: 'appartamento',
+		name: 'Appartamento', // Updated Name
+		imageUrl: 'https://placehold.co/600x400/B0C4DE/31343C?text=Appartamento', // Apartment placeholder
+		priceIndicator: 'From €160', // Example price
+		shortDescription: 'Spacious apartment ideal for families or longer stays, featuring a kitchenette and living area.',
+		features: ['Sleeps 4', 'Kitchenette', 'Living Area', 'Separate Bedroom'],
+		detailUrl: '/rooms/appartamento' // Updated URL slug
+	}
+];
+
+// --- Page Meta Data ---
+const pageTitle = "Our Rooms | RediRomaBnB";
+const pageDescription = "Explore our unique rooms: Camera Arancione, Camera Verde, and our spacious Appartamento at RediRomaBnB in Rome.";
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+
+	<section class="rooms-hero">
+		<div class="container">
+			<h1>Our Accommodations</h1>
+			<p>Choose between our charming double rooms, Camera Arancione and Camera Verde, or our spacious Appartamento for your stay in Rome.</p>
+		</div>
+	</section>
+
+	<section class="rooms-list container">
+		<div class="room-grid">
+			{allRooms.map(room => (
+				<RoomCard
+					name={room.name}
+					imageUrl={room.imageUrl}
+					priceIndicator={room.priceIndicator}
+					shortDescription={room.shortDescription}
+					features={room.features}
+					detailUrl={room.detailUrl}
+				/>
+			))}
+		</div>
+	</section>
+
+    <section id="booking-section" class="booking-cta container">
+        <h2>Ready to Book?</h2>
+        <p>Check availability for your desired dates and secure your room today.</p>
+        <div class="booking-widget-placeholder" style="min-height: 100px; border: 1px dashed #ccc; display: flex; align-items: center; justify-content: center; background: #f9f9f9; margin-top: 1rem;">
+            [Link to Main Booking Engine or Widget Here]
+        </div>
+    </section>
+
+</Layout>
+
+<style>
+	/* Styles are inherited from the previous version, no changes needed here unless further customization is desired */
+	.rooms-hero {
+		background-color: var(--brandSecondary, #F5F5DC); /* Light background */
+		padding: 3rem 0;
+		text-align: center;
+		margin-bottom: 3rem;
+	}
+	.rooms-hero h1 {
+		margin-bottom: 0.5em;
+	}
+	.rooms-hero p {
+		font-size: 1.1rem;
+		max-width: 700px;
+		margin: 0 auto;
+		color: var(--textDark, #333);
+        opacity: 0.9;
+	}
+
+	.rooms-list {
+		padding-bottom: 3rem;
+	}
+
+	.room-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */
+		gap: 2rem;
+	}
+
+    .booking-cta {
+        text-align: center;
+        padding: 3rem 0;
+        background-color: #fafafa; /* Slightly different background */
+        margin-top: 3rem;
+    }
+    .booking-cta h2 {
+        margin-bottom: 1rem;
+    }
+
+	@media (max-width: 768px) {
+		.room-grid {
+			grid-template-columns: 1fr; /* Stack cards */
+		}
+        .rooms-hero {
+            padding: 2rem 0;
+        }
+	}
+</style>

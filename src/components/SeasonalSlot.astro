@@ -1,0 +1,88 @@
+---
+// src/components/SeasonalSlot.astro
+// Displays seasonal content/promotions. Data is passed via props.
+
+interface Props {
+	title: string;
+	description: string;
+	image: string;
+	ctaText?: string; // Optional call to action button text
+	ctaLink?: string; // Optional call to action link
+}
+
+const { title, description, image, ctaText, ctaLink } = Astro.props;
+---
+
+<div class="seasonal-promo">
+	<div class="promo-image">
+		<img src={image} alt={title} loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/800x400/EEE/CCC?text=Promo+Image';">
+	</div>
+	<div class="promo-content">
+		<h3>{title}</h3>
+		<p>{description}</p>
+		{ctaLink && ctaText && (
+			<a href={ctaLink} class="promo-cta">{ctaText}</a>
+		)}
+		<slot name="interactive-content" />
+	</div>
+</div>
+
+<style>
+	.seasonal-promo {
+		background-color: var(--brandSecondary, #F5F5DC); /* Use variable from Layout or fallback */
+		border-radius: 8px;
+		overflow: hidden;
+		box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+		display: grid; /* Use grid for layout */
+		grid-template-columns: 1fr; /* Stack image and text by default */
+		text-align: left; /* Override centered text from parent section */
+	}
+
+	.promo-image img {
+		width: 100%;
+		height: 250px; /* Adjust height as needed */
+		object-fit: cover;
+	}
+
+	.promo-content {
+		padding: 2rem;
+	}
+
+	.promo-content h3 {
+		margin-top: 0;
+		margin-bottom: 1rem;
+		font-size: 1.8rem;
+		color: var(--brandPrimary, #B8860B); /* Use variable or fallback */
+	}
+
+	.promo-content p {
+		margin-bottom: 1.5rem;
+		line-height: 1.7;
+	}
+
+	.promo-cta {
+		display: inline-block;
+		background-color: var(--brandPrimary, #B8860B);
+		color: var(--textLight, #FFFFFF);
+		padding: 0.6rem 1.5rem;
+		border-radius: 50px;
+		font-weight: bold;
+		transition: background-color 0.3s ease;
+	}
+	.promo-cta:hover {
+		background-color: color-mix(in srgb, var(--brandPrimary, #B8860B) 90%, black);
+		text-decoration: none;
+	}
+
+	/* Layout for wider screens: Image beside text */
+	@media (min-width: 768px) {
+		.seasonal-promo {
+			grid-template-columns: 1fr 1fr; /* Two equal columns */
+			align-items: center; /* Vertically align content */
+		}
+		.promo-image img {
+			height: 100%; /* Let image fill the grid cell height */
+			max-height: 350px; /* Optional max height */
+		}
+	}
+</style>

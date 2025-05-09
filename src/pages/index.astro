@@ -1,16 +1,305 @@
 ---
+// src/pages/index.astro
+// Homepage - V2 with new theme, content sections, optimizations - Using Fallback Component
 
+import Layout from '../layouts/Layout.astro';
+import RoomCard from '../components/RoomCard.astro';
+import SeasonalSlot from '../components/SeasonalSlot.astro';
+import WhyBookDirect from '../components/WhyBookDirect.astro';
+import GuestJourney from '../components/GuestJourney.astro';
+import { ClientOnly } from 'astro:components';
+import BookingLoadingFallback from '../components/BookingLoadingFallback.astro'; // Import the new fallback component
+
+// --- Mock Data (Use updated room names/details) ---
+const featuredRooms = [
+	{ id: 'arancione', name: 'Camera Arancione', imageUrl: 'https://placehold.co/600x400/FF8C00/FFFFFF?text=Camera+Arancione', priceIndicator: 'From €110', shortDescription: 'Bright double room with warm tones.', features: ['Sleeps 2', 'Ensuite', 'AC'], detailUrl: '/rooms/camera-arancione' },
+	{ id: 'verde', name: 'Camera Verde', imageUrl: 'https://placehold.co/600x400/2E8B57/FFFFFF?text=Camera+Verde', priceIndicator: 'From €115', shortDescription: 'Relaxing double room, garden views.', features: ['Sleeps 2', 'Ensuite', 'Garden View'], detailUrl: '/rooms/camera-verde' },
+	{ id: 'appartamento', name: 'Appartamento', imageUrl: 'https://placehold.co/600x400/B0C4DE/31343C?text=Appartamento', priceIndicator: 'From €160', shortDescription: 'Spacious apartment for families.', features: ['Sleeps 4', 'Kitchenette', 'Living Area'], detailUrl: '/rooms/appartamento' }
+];
+
+// --- Seasonal Content Data (Update as needed) ---
+const seasonContent = { title: "Summer Gelato Guide", description: "Discover the best gelato near Redi Roma BnB!", image: "https://placehold.co/800x400/FFFACD/31343C?text=Gelato+Time", ctaText: "Find Best Gelato", ctaLink: "/blog/best-gelato-shops" };
+
+// --- Page Meta Data & Schema ---
+const pageTitle = "Redi Roma BnB | Affordable & Charming B&B near Colosseum";
+const pageDescription = "Stay at Redi Roma BnB, your charming and affordable choice near the Colosseum and San Giovanni, Rome. Book direct for best rates & perks.";
+const homeSchemaData = {
+    "potentialAction": [
+        { "@type": "ReserveAction", "target": Astro.url.origin + "/#booking-section" },
+        { "@type": "ViewAction", "target": Astro.url.origin + "/rooms", "name": "View Rooms"}
+    ],
+     "location": {
+        "@type": "Place",
+        "name": "Redi Roma BnB Location",
+        "hasMap": "YOUR_GOOGLE_MAPS_LINK", // Replace with your actual Google Maps listing link
+        "geo": { "@type": "GeoCoordinates", "latitude": "YOUR_LATITUDE", "longitude": "YOUR_LONGITUDE" }, // Replace with actual coordinates
+        "address": { "@type": "PostalAddress", "streetAddress": "[Your Street Address]", "addressLocality": "Rome", "postalCode": "[Your Postal Code]", "addressCountry": "IT" }, // Replace with actual address
+        "publicAccess": true,
+     },
+     "amenityFeature": [
+        { "@type": "LocationFeatureSpecification", "name": "Proximity to Colosseum", "value": true, "comment": "Approx. 10-15 min walk" },
+        { "@type": "LocationFeatureSpecification", "name": "Proximity to San Giovanni Basilica", "value": true, "comment": "Approx. 5 min walk" }
+     ]
+};
+
+// Hero Image Paths (Replace with your actual optimized image paths)
+const heroImages = {
+    avif: '/images/hero-colosseum-view.avif',
+    webp: '/images/hero-colosseum-view.webp',
+    jpeg: '/images/hero-colosseum-view.jpg', // Fallback
+    alt: 'View towards the Colosseum from near Redi Roma BnB'
+};
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title={pageTitle} description={pageDescription} schemaType="LodgingBusiness" schemaData={homeSchemaData}>
+
+	<section class="hero-section">
+		<picture>
+            <source srcset={heroImages.avif} type="image/avif" />
+            <source srcset={heroImages.webp} type="image/webp" />
+            <img
+                src={heroImages.jpeg}
+                alt={heroImages.alt}
+                class="hero-background-image"
+                loading="eager"
+                fetchpriority="high"
+                width="1920"
+                height="700"
+            />
+        </picture>
+		<div class="hero-overlay"></div>
+		<div class="hero-content container">
+			<h1>Your Roman Charm Near the Colosseum</h1>
+			<p class="subtitle">Affordable style, steps from history. Book direct for exclusive perks.</p>
+			<a href="#booking-section" class="button button-accent">Check Availability</a>
+		</div>
+	</section>
+
+	<section class="intro-section container text-center">
+		<h2>Welcome to Redi Roma BnB</h2>
+		<p class="intro-text">Experience the heart of Rome without breaking the bank. We offer beautifully appointed rooms and personalized service, perfectly located near the Colosseum and San Giovanni Basilica. Your authentic Roman adventure starts here.</p>
+		<div class="trust-elements">
+			<span>⭐ 4.9 Google Reviews</span> | <span>✅ Verified Host</span> | <span>🏆 Traveler Favorite 2024</span>
+		</div>
+	</section>
+
+    <WhyBookDirect />
+
+	<section class="featured-rooms container">
+		<h2 class="text-center">Our Rooms</h2>
+		<div class="room-grid">
+			{featuredRooms.map(room => (
+				<RoomCard
+					name={room.name}
+					imageUrl={room.imageUrl}
+					priceIndicator={room.priceIndicator}
+					shortDescription={room.shortDescription}
+					features={room.features}
+					detailUrl={room.detailUrl}
+				/>
+			))}
+		</div>
+		<div class="text-center see-all-rooms">
+			<a href="/rooms" class="button button-primary">View All Rooms</a>
+		</div>
+	</section>
+
+    <GuestJourney />
+
+	<section class="seasonal-section container">
+         <h2 class="text-center">Rome This Season</h2>
+		<SeasonalSlot
+			title={seasonContent.title}
+			description={seasonContent.description}
+			image={seasonContent.image}
+			ctaText={seasonContent.ctaText}
+			ctaLink={seasonContent.ctaLink}
+		/>
+	</section>
+
+	<section class="location-highlights container text-center">
+		<h2>Explore Like a Local</h2>
+		<p>We're minutes from iconic landmarks and authentic neighborhoods.</p>
+		<div class="location-links">
+			<a href="/near-colosseum">Walk to the Colosseum (15 min)</a> |
+			<a href="/location#san-giovanni">Discover San Giovanni</a> |
+			<a href="/rome-airport-transport">Airport Transport Guide</a>
+		</div>
+        <a href="/location" class="map-preview-link">
+            <img
+                src="https://placehold.co/800x300/4A6B63/FFFFFF?text=View+Our+Location+Map"
+                alt="Map preview showing Redi Roma BnB location"
+                loading="lazy"
+                class="map-preview-image"
+            />
+        </a>
+	</section>
+
+    <section class="speed-comparison container text-center">
+        <h2>Tired of Slow Hotel Sites?</h2>
+        <p>Our modern website loads lightning fast, especially on mobile, saving you time and frustration compared to older sites like Hotel BB Roma. Experience the difference!</p>
+        <div class="speed-graphic-placeholder">[Graphic comparing load times]</div>
+    </section>
+
+   
+
+</Layout>
+
+{/* Styles remain the same as astro_homepage_rediroma_v2_fixed */}
+<style>
+    /* --- General Utils --- */
+    .text-center { text-align: center; }
+
+	/* --- Hero Section Styles --- */
+	.hero-section {
+		position: relative;
+		height: 75vh; /* Adjust height */
+		min-height: 500px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+		color: var(--color-text-light);
+		overflow: hidden;
+	}
+
+	.hero-background-image {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+        object-fit: cover; /* Cover the area */
+		z-index: 1;
+	}
+    .hero-overlay {
+        position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+        background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.5)); /* Subtle overlay */
+        z-index: 2;
+    }
+
+	.hero-content {
+		position: relative;
+		z-index: 3;
+		padding: 2rem;
+        max-width: 700px;
+	}
+
+	.hero-content h1 {
+		font-size: clamp(2.5rem, 5vw, 3.5rem); /* Responsive font size */
+		margin-bottom: 0.5em;
+		color: var(--color-text-light);
+		text-shadow: 2px 2px 5px rgba(0,0,0,0.6);
+	}
+
+	.hero-content .subtitle {
+		font-size: clamp(1rem, 2.5vw, 1.3rem);
+		margin-bottom: 1.5em;
+		font-weight: 400;
+		text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+	}
+
+    /* Use button styles from Layout */
+	.hero-content .button-accent {
+        padding: 0.8rem 2rem; /* Adjust padding */
+    }
+
+
+	/* --- Intro Section --- */
+	.intro-section, .featured-rooms, .seasonal-section, .location-highlights, .speed-comparison, .booking-section {
+		padding-top: 4rem;
+		padding-bottom: 4rem;
+	}
+     .intro-section h2, .featured-rooms h2, .seasonal-section h2, .location-highlights h2, .speed-comparison h2, .booking-section h2 {
+		margin-bottom: 1.5rem;
+	}
+	.intro-text {
+		max-width: 750px;
+		margin: 0 auto 1.5rem auto;
+        font-size: 1.1rem;
+        line-height: 1.8;
+	}
+	.trust-elements {
+		margin-top: 1.5rem;
+		font-size: 1rem;
+		opacity: 0.9;
+        font-weight: bold;
+        color: var(--color-primary);
+	}
+	.trust-elements span {
+		margin: 0 0.75rem;
+        white-space: nowrap;
+	}
+
+	/* --- Room Grid --- */
+	.room-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+		gap: 2rem;
+		margin-top: 2rem;
+	}
+	.see-all-rooms { margin-top: 2.5rem; }
+
+
+	/* --- Seasonal & Location --- */
+    .seasonal-section .container > div { /* Target the component's wrapper */
+		max-width: 900px;
+		margin: 2rem auto 0 auto; /* Add margin top */
+	}
+	.location-highlights p {
+		max-width: 700px;
+		margin: 0 auto 1.5rem auto;
+	}
+	.location-links a {
+		margin: 0 0.75rem 0.5rem 0.75rem; /* Add bottom margin for wrap */
+		font-weight: bold;
+        display: inline-block; /* Ensure wrapping works well */
+	}
+    .map-preview-link { display: block; max-width: 800px; margin: 2rem auto 0 auto; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    .map-preview-image { border-radius: 8px; transition: transform 0.3s ease; }
+    .map-preview-link:hover .map-preview-image { transform: scale(1.03); }
+
+
+    /* --- Speed Comparison --- */
+    .speed-comparison { background-color: color-mix(in srgb, var(--color-background) 90%, black); } /* Slightly darker bg */
+    .speed-graphic-placeholder {
+        margin: 1.5rem auto 0 auto;
+        padding: 2rem;
+        border: 1px dashed var(--color-accent);
+        background-color: var(--color-background);
+        max-width: 400px;
+        border-radius: 8px;
+        font-style: italic;
+    }
+
+
+	/* --- Booking Section --- */
+    /* Fallback styles are now in BookingLoadingFallback.astro */
+	.booking-widget-placeholder {
+		margin-top: 2rem;
+		padding: 2rem;
+		border: 1px solid #ccc;
+		background-color: #fff; /* White background for widget area */
+        border-radius: 8px;
+		min-height: 250px; /* Placeholder height */
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+	}
+
+	/* Responsive Adjustments */
+	@media (max-width: 768px) {
+		.hero-content h1 { font-size: 2.2rem; }
+		.hero-content .subtitle { font-size: 1.1rem; }
+		.room-grid { grid-template-columns: 1fr; }
+        .trust-elements span { margin: 0 0.5rem; display: block; margin-bottom: 0.5rem; } /* Stack trust elements */
+        .intro-section, .featured-rooms, .seasonal-section, .location-highlights, .speed-comparison, .booking-section { padding-top: 3rem; padding-bottom: 3rem; }
+	}
+
+</style>

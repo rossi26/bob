@@ -1,0 +1,197 @@
+---
+// src/pages/location.astro
+// Describes the location of RediRomaBnB and nearby attractions.
+
+import Layout from '../layouts/Layout.astro';
+
+// --- Page Meta Data ---
+const pageTitle = "Location | RediRomaBnB";
+const pageDescription = "Located ideally between Trastevere and the Vatican, RediRomaBnB is your perfect starting point to explore Rome's iconic sights.";
+
+// --- Schema.org for the B&B's Location ---
+// This could be expanded significantly
+const lodgingSchema = {
+  "@context": "https://schema.org",
+  "@type": "LodgingBusiness",
+  "name": "RediRomaBnB",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "[Your Street Address]", // Add your actual address
+    "addressLocality": "Rome",
+    "postalCode": "[Your Postal Code]",
+    "addressCountry": "IT"
+  },
+  // Add geo coordinates if possible
+  // "geo": {
+  //   "@type": "GeoCoordinates",
+  //   "latitude": "YOUR_LATITUDE",
+  //   "longitude": "YOUR_LONGITUDE"
+  // },
+  "url": Astro.url.origin // Gets the base URL dynamically
+};
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+    <slot name="head">
+        <script type="application/ld+json" set:html={JSON.stringify(lodgingSchema)} />
+        </slot>
+
+	<section class="location-hero">
+		<div class="container">
+			<h1>Explore Rome From Our Doorstep</h1>
+			<p>Perfectly situated to experience the best of the Eternal City. Discover charming neighborhoods and iconic landmarks within easy reach.</p>
+		</div>
+	</section>
+
+	<section class="location-details container">
+
+        <div class="location-map-section">
+            <div class="location-text">
+                <h2>Prime Location</h2>
+                <p>RediRomaBnB boasts an enviable location, offering easy access to Rome's most beloved areas. Whether you're seeking the bohemian atmosphere of Trastevere or the spiritual heart of the Vatican, you'll find it just a short walk or convenient bus ride away.</p>
+                <p><strong>Address:</strong> {lodgingSchema.address.streetAddress}, {lodgingSchema.address.postalCode} Rome, Italy</p>
+                 <h3>Getting Around</h3>
+                <p>We are well-connected by public transport. Bus routes [Bus Numbers] stop nearby, providing direct access to [Major Landmarks like Colosseum, Termini Station]. The [Nearest Metro Station] is approximately a [Time] walk away.</p>
+            </div>
+            <div class="map-placeholder">
+                <p>[Interactive Map Area]</p>
+                <img src="https://placehold.co/600x400/AFA/31343C?text=Map+Placeholder" alt="Map showing RediRomaBnB location" style="border: 1px solid #ccc; border-radius: 8px;">
+                 </div>
+        </div>
+
+        <div class="neighborhood-highlights">
+            <h2>Nearby Gems</h2>
+            <div class="neighborhood-grid">
+                <article id="trastevere" class="neighborhood-card">
+                    <img src="https://placehold.co/500x300/E6B0AA/31343C?text=Trastevere+Charm" alt="Charming street in Trastevere">
+                    <h3>Trastevere (Approx. 10-15 min walk)</h3>
+                    <p>Lose yourself in the enchanting cobblestone streets of Trastevere. Discover artisan shops, lively trattorias, bustling piazzas, and enjoy the vibrant nightlife.</p>
+                </article>
+                <article id="vatican" class="neighborhood-card">
+                    <img src="https://placehold.co/500x300/A9CCE3/31343C?text=Vatican+City" alt="St. Peter's Basilica, Vatican City">
+                    <h3>Vatican City (Approx. 15-20 min walk)</h3>
+                    <p>Visit the heart of the Catholic world. Marvel at St. Peter's Basilica, explore the Vatican Museums, and admire Michelangelo's Sistine Chapel.</p>
+                </article>
+                <article id="local-tips" class="neighborhood-card">
+                     <img src="https://placehold.co/500x300/F9E79F/31343C?text=Local+Dining" alt="Italian pasta dish">
+                    <h3>Local Flavors & More</h3>
+                    <p>Just steps away, you'll find authentic bakeries, gelaterias, local markets, and essential services like pharmacies and supermarkets. Ask us for recommendations!</p>
+                </article>
+            </div>
+        </div>
+
+	</section>
+
+    </Layout>
+
+<style>
+	.location-hero {
+		background: url('https://placehold.co/1920x500/778899/FFFFFF?text=Rome+Skyline+View+(Replace)') no-repeat center center/cover;
+        background-color: rgba(0,0,0,0.4); /* Overlay */
+        background-blend-mode: multiply;
+		padding: 4rem 0;
+		text-align: center;
+		color: white;
+		margin-bottom: 3rem;
+	}
+	.location-hero h1 {
+		margin-bottom: 0.5em;
+        color: white;
+	}
+	.location-hero p {
+		font-size: 1.1rem;
+		max-width: 700px;
+		margin: 0 auto;
+	}
+
+    .location-details {
+        padding-bottom: 3rem;
+    }
+
+    .location-map-section {
+        display: grid;
+        grid-template-columns: 1fr; /* Stack by default */
+        gap: 2rem;
+        margin-bottom: 3rem;
+        align-items: center;
+    }
+
+    .location-text h2, .neighborhood-highlights h2 {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    .location-text h3 {
+        margin-top: 1.5rem;
+        margin-bottom: 0.5rem;
+        font-size: 1.3rem;
+    }
+
+    .map-placeholder {
+        text-align: center;
+        font-style: italic;
+        color: #666;
+        background: #f9f9f9;
+        padding: 1rem;
+        border-radius: 8px;
+        min-height: 300px; /* Ensure space */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+     .map-placeholder img {
+        margin-top: 1rem;
+        max-width: 100%;
+        max-height: 350px;
+     }
+
+    .neighborhood-highlights {
+        margin-top: 3rem;
+    }
+
+    .neighborhood-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+
+    .neighborhood-card {
+        background: #fff;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .neighborhood-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .neighborhood-card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-bottom: 1px solid #eee;
+    }
+
+    .neighborhood-card h3 {
+        font-size: 1.4rem;
+        margin: 1rem 1.5rem 0.5rem 1.5rem;
+    }
+
+    .neighborhood-card p {
+        font-size: 0.95rem;
+        padding: 0 1.5rem 1.5rem 1.5rem;
+        line-height: 1.6;
+    }
+
+    @media (min-width: 768px) {
+        .location-map-section {
+            grid-template-columns: 1fr 1fr; /* Side-by-side map and text */
+        }
+        .location-text h2 {
+            text-align: left; /* Align left on larger screens */
+        }
+    }
+</style>

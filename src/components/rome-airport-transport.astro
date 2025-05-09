@@ -1,0 +1,238 @@
+---
+// src/pages/rome-airport-transport.astro
+// Guide for transport between FCO Airport and Redi Roma BnB.
+
+import Layout from '../layouts/Layout.astro'; // Adjust path if needed
+
+// --- Page Meta Data & Schema ---
+const pageTitle = "Rome FCO Airport to City Center Transport | Redi Roma BnB Guide";
+const pageDescription = "Your complete guide on getting from Rome Fiumicino (FCO) Airport to the city center and Redi Roma BnB. Options include train, bus, and taxi.";
+const schemaData = {
+    "@type": "HowTo", // Using HowTo schema for transport instructions
+    "name": "How to Get from Rome FCO Airport to Redi Roma BnB",
+    "description": pageDescription,
+    "step": [
+        {
+            "@type": "HowToStep",
+            "name": "Option 1: Leonardo Express Train",
+            "text": "Take the Leonardo Express train from FCO Airport station directly to Roma Termini (main station). Runs every 15-30 mins, takes ~32 mins. From Termini, take Metro Line A (direction Anagnina) to 'San Giovanni' or 'Re di Roma' station, both a short walk from the B&B.",
+            "url": Astro.url.toString() + "#option-train" // Link to section
+        },
+        {
+            "@type": "HowToStep",
+            "name": "Option 2: Regional Train (FL1)",
+            "text": "Take the FL1 regional train from FCO Airport towards Fara Sabina/Orte. Get off at Roma Tuscolana station. From Tuscolana, it's a short taxi ride or a slightly longer walk (~15-20 mins) to Redi Roma BnB, or connect to Metro Line A at 'Ponte Lungo' (1 stop from Tuscolana) towards Battistini and get off at 'Re di Roma'. This option is cheaper but involves more changes.",
+             "url": Astro.url.toString() + "#option-regional-train"
+        },
+        {
+            "@type": "HowToStep",
+            "name": "Option 3: Airport Shuttle Bus",
+            "text": "Several companies (e.g., Terravision, SIT Bus Shuttle) operate direct buses from FCO Airport (Terminal 3 bus bays) to Roma Termini station. Journey time is 45-60 mins depending on traffic. From Termini, follow Metro instructions in Option 1.",
+             "url": Astro.url.toString() + "#option-bus"
+        },
+        {
+            "@type": "HowToStep",
+            "name": "Option 4: Taxi / Private Transfer",
+            "text": "Official Rome city taxis have a fixed fare from FCO to destinations within the Aurelian Walls (where Redi Roma BnB is located). Verify the current fixed fare (€50 as of early 2025, check official sources). Alternatively, pre-book a private transfer service for convenience.",
+            "url": Astro.url.toString() + "#option-taxi"
+        }
+    ],
+    "estimatedCost": { // Provide a range
+        "@type": "MonetaryAmount",
+        "currency": "EUR",
+        "minValue": "8", // Regional train cost approx
+        "maxValue": "50" // Taxi fixed fare approx
+    },
+    "totalTime": "PT45M", // Estimated average time (e.g., 45 minutes) - adjust as needed
+    // Link back to the main LodgingBusiness
+    "provider": { "@type": "LodgingBusiness", "name": "Redi Roma BnB", "url": Astro.url.origin }
+};
+---
+
+<Layout title={pageTitle} description={pageDescription} schemaType="HowTo" schemaData={schemaData}>
+
+	<section class="location-guide-hero transport-hero">
+		<div class="container text-center">
+			<h1>Rome FCO Airport to Redi Roma BnB</h1>
+			<p>Navigating from Fiumicino Airport? We make it easy!</p>
+		</div>
+	</section>
+
+	<section class="location-guide-content container">
+		<h2>Your Transport Options from Fiumicino (FCO)</h2>
+        <p class="intro-paragraph">Welcome to Rome! Getting from Leonardo da Vinci–Fiumicino Airport (FCO) to Redi Roma BnB near San Giovanni is straightforward. Here are the most common and recommended options, catering to different budgets and preferences. Our B&B is located within the Aurelian Walls, relevant for taxi fares.</p>
+
+        <article id="option-train" class="transport-option">
+            <div class="option-icon">🚆</div>
+            <h3>Option 1: Leonardo Express Train (Fastest Public Transport)</h3>
+            <p>This non-stop train service connects FCO Airport directly to Rome's main station, <strong>Roma Termini</strong>.</p>
+            <ul>
+                <li><strong>Where to Catch:</strong> Follow signs for 'Treni/Trains' inside FCO Airport to the station.</li>
+                <li><strong>Frequency:</strong> Every 15-30 minutes.</li>
+                <li><strong>Journey Time:</strong> Approximately 32 minutes to Termini.</li>
+                <li><strong>Cost:</strong> €14 per person (check current price). Tickets available online, at station counters, or machines. Remember to validate paper tickets before boarding!</li>
+                <li><strong>From Termini to Redi Roma BnB:</strong>
+                    <ol>
+                        <li>Inside Termini, follow signs for 'Metro A' (Red Line).</li>
+                        <li>Take Line A direction <strong>Anagnina</strong>.</li>
+                        <li>Get off at <strong>San Giovanni</strong> station (3 stops) or <strong>Re di Roma</strong> station (4 stops).</li>
+                        <li>Both stations are a short walk (5-10 minutes) from Redi Roma BnB. Check our exact address on the <a href="/location">Location page</a>.</li>
+                    </ol>
+                </li>
+            </ul>
+            <p><strong>Pros:</strong> Fast, frequent, avoids city traffic.</p>
+            <p><strong>Cons:</strong> Most expensive public transport option, requires Metro connection.</p>
+        </article>
+
+        <article id="option-regional-train" class="transport-option">
+            <div class="option-icon">🚉</div>
+            <h3>Option 2: Regional Train FL1 (Cheaper, More Changes)</h3>
+            <p>This train stops at several stations in Rome, including some closer to us than Termini, but requires careful navigation.</p>
+            <ul>
+                <li><strong>Where to Catch:</strong> Same station at FCO Airport as Leonardo Express. Look for trains direction <strong>Fara Sabina / Poggio Mirteto / Orte</strong>.</li>
+                <li><strong>Key Stop:</strong> Get off at <strong>Roma Tuscolana</strong> station.</li>
+                <li><strong>Frequency:</strong> Every 15 mins on weekdays, ~30 mins on weekends/holidays.</li>
+                <li><strong>Journey Time:</strong> Approximately 40 minutes to Tuscolana.</li>
+                <li><strong>Cost:</strong> €8 per person (check current price). Validate tickets!</li>
+                <li><strong>From Tuscolana to Redi Roma BnB:</strong>
+                    <ul>
+                        <li><strong>Option A (Walk/Taxi):</strong> Short taxi ride (5-10 mins) or a 15-20 minute walk.</li>
+                        <li><strong>Option B (Metro):</strong> Walk ~5 mins from Tuscolana station to 'Ponte Lungo' Metro A station. Take Line A direction <strong>Battistini</strong> for 1 stop to <strong>Re di Roma</strong> station.</li>
+                    </ul>
+                </li>
+            </ul>
+            <p><strong>Pros:</strong> Cheaper than Leonardo Express.</p>
+            <p><strong>Cons:</strong> Slower, requires more changes/walking or a taxi from Tuscolana, can be crowded.</p>
+        </article>
+
+        <article id="option-bus" class="transport-option">
+             <div class="option-icon">🚌</div>
+            <h3>Option 3: Airport Shuttle Bus (Direct to Termini, Budget-Friendly)</h3>
+            <p>Several companies offer coach services between FCO and Roma Termini.</p>
+             <ul>
+                <li><strong>Where to Catch:</strong> Outside Terminal 3 arrivals, follow signs for 'Bus Station'. Look for companies like Terravision, SIT Bus Shuttle, TAM Bus, etc.</li>
+                <li><strong>Frequency:</strong> Varies by company, generally every 30-45 minutes.</li>
+                <li><strong>Journey Time:</strong> 45-60 minutes (highly dependent on traffic).</li>
+                <li><strong>Cost:</strong> €6-€8 per person (check specific company prices). Often cheaper if booked online in advance.</li>
+                <li><strong>From Termini to Redi Roma BnB:</strong> Follow the same Metro instructions as Option 1 (Leonardo Express).</li>
+            </ul>
+            <p><strong>Pros:</strong> Budget-friendly, direct to Termini.</p>
+            <p><strong>Cons:</strong> Can be slow due to traffic, requires Metro connection from Termini.</p>
+        </article>
+
+        <article id="option-taxi" class="transport-option">
+             <div class="option-icon">🚕</div>
+            <h3>Option 4: Taxi or Private Transfer (Most Convenient)</h3>
+            <p>The easiest, door-to-door option, especially with luggage or for families.</p>
+             <ul>
+                <li><strong>Official Taxis:</strong> Follow signs for 'Taxi' at FCO arrivals. Use only official white Rome city taxis with meters.</li>
+                <li><strong>Fixed Fare:</strong> There's a <strong>fixed fare (€50 as of early 2025 - verify current official rate!)</strong> for journeys from FCO to destinations inside the Aurelian Walls (includes Redi Roma BnB). Confirm the fare with the driver before starting. Journey time ~40-60 mins.</li>
+                <li><strong>Private Transfer (NCC):</strong> Pre-booked cars (Noleggio Con Conducente). Often slightly more expensive than taxis but can be booked in advance online with fixed prices, meet-and-greet service, and potentially larger vehicles. Useful for groups.</li>
+            </ul>
+            <p><strong>Pros:</strong> Door-to-door convenience, no changes, fixed fare for official taxis.</p>
+            <p><strong>Cons:</strong> Most expensive option, subject to traffic delays.</p>
+        </article>
+
+        <section class="recommendation">
+            <h2>Our Recommendation?</h2>
+            <ul>
+                <li><strong>For speed & ease (if budget allows):</strong> Taxi or Leonardo Express + Metro.</li>
+                <li><strong>For budget travelers comfortable with changes:</strong> Regional Train FL1 + Metro/Walk or Airport Shuttle Bus + Metro.</li>
+                <li><strong>For families/groups with luggage:</strong> Taxi or pre-booked Private Transfer often offers the best value for convenience.</li>
+            </ul>
+            <p>If you have any questions before your arrival, please don't hesitate to <a href="/contact">contact us</a>!</p>
+        </section>
+
+	</section>
+
+</Layout>
+
+<style>
+    .location-guide-hero {
+        padding: 4rem 0;
+        background-color: var(--color-primary);
+        color: var(--color-text-light);
+        margin-bottom: 3rem;
+    }
+    .transport-hero { /* Optional: Add specific background */
+        background: linear-gradient(rgba(74, 107, 99, 0.8), rgba(74, 107, 99, 0.8)), url('https://placehold.co/1920x400/A0CED9/FFFFFF?text=FCO+Airport+Sign+(Replace)') no-repeat center center/cover;
+     }
+    .location-guide-hero h1 { color: var(--color-text-light); margin-bottom: 0.5em; }
+    .location-guide-hero p { font-size: 1.2rem; opacity: 0.9; }
+
+    .location-guide-content { padding-bottom: 3rem; }
+    .location-guide-content > h2 { /* Style the main H2 */
+        text-align: center;
+        margin-bottom: 1rem;
+        font-size: 2rem;
+    }
+    .intro-paragraph {
+        text-align: center;
+        max-width: 800px;
+        margin: 0 auto 3rem auto;
+        font-size: 1.1rem;
+        line-height: 1.7;
+    }
+
+    .transport-option {
+        background-color: #fff;
+        border: 1px solid #eee;
+        border-left: 5px solid var(--color-accent); /* Accent border */
+        padding: 2rem;
+        margin-bottom: 2rem;
+        border-radius: 0 8px 8px 0; /* Rounded corners except left */
+        position: relative;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    }
+    .transport-option h3 {
+        margin-top: 0;
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
+        display: flex;
+        align-items: center;
+    }
+    .option-icon {
+        font-size: 2rem;
+        margin-right: 1rem;
+        line-height: 1;
+        background-color: color-mix(in srgb, var(--color-accent) 15%, transparent);
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .transport-option ul, .transport-option ol {
+        margin-left: 1.5rem;
+        margin-bottom: 1rem;
+    }
+     .transport-option li { margin-bottom: 0.75rem; line-height: 1.7; }
+     .transport-option strong { color: var(--color-primary); }
+     .transport-option ol ol, .transport-option ul ul { margin-top: 0.5rem; } /* Indent nested lists */
+
+     .transport-option p { margin-bottom: 0.5rem; }
+     .transport-option p:last-of-type { margin-bottom: 0; }
+
+
+    .recommendation {
+        margin-top: 3rem;
+        padding: 2rem;
+        background-color: color-mix(in srgb, var(--color-primary) 8%, transparent);
+        border-radius: 8px;
+        border: 1px solid color-mix(in srgb, var(--color-primary) 15%, transparent);
+    }
+    .recommendation h2 { text-align: center; margin-bottom: 1.5rem; }
+    .recommendation ul { list-style: none; padding: 0; margin-bottom: 1.5rem; }
+    .recommendation li { margin-bottom: 0.75rem; padding-left: 1.5rem; position: relative; }
+    .recommendation li::before {
+        content: '💡'; /* Lightbulb icon */
+        position: absolute;
+        left: 0;
+        top: 2px;
+    }
+     .recommendation p { text-align: center; }
+
+</style>

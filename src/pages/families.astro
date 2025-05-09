@@ -1,0 +1,219 @@
+---
+// src/pages/families.astro
+// Information specifically for families traveling to RediRomaBnB.
+
+import Layout from '../layouts/Layout.astro';
+
+// --- Page Meta Data ---
+const pageTitle = "Family Stays in Rome | RediRomaBnB";
+const pageDescription = "Traveling to Rome with kids? RediRomaBnB offers family-friendly suites, amenities like cribs, and a great location near parks and attractions.";
+
+// --- Family Policy Schema ---
+// Embed this within the main LodgingBusiness schema if possible,
+// or include it standalone on this page.
+const familyPolicySchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage", // Or LodgingBusiness if this is the main entity description
+  "name": "Family-Friendly Stays at RediRomaBnB",
+  "description": pageDescription,
+  "mainEntity": {
+    "@type": "LodgingBusiness",
+    "name": "RediRomaBnB",
+    "url": Astro.url.origin,
+    // Define family-specific amenities here
+    "amenityFeature": [
+      {
+        "@type": "LocationFeatureSpecification",
+        "name": "Family Policies",
+        "value": {
+          "@type": "Policy",
+          "name": "Family Policy Details",
+          "policyType": "https://schema.org/FamilyPolicy",
+          // Set these to true/false based on actual availability
+          "childCare": false, // e.g., If you don't offer directly but can recommend
+          "cribsAvailable": true,
+          "highChairsAvailable": true, // Add if available
+          "strollersAvailable": false, // Add if available
+          "childFriendly": true
+        }
+      },
+      { "@type": "LocationFeatureSpecification", "name": "Crib Available", "value": true },
+      { "@type": "LocationFeatureSpecification", "name": "High Chair Available", "value": true },
+      { "@type": "LocationFeatureSpecification", "name": "Family Suites Available", "value": true },
+      { "@type": "LocationFeatureSpecification", "name": "Kitchenette in some rooms", "value": true }
+      // Add other relevant amenities: e.g., proximity to playground, babysitting recommendation service
+    ]
+    // Reference suitable rooms
+    // "makesOffer": [ { "@type": "Offer", "itemOffered": { "@type": "HotelRoom", "name": "The Trastevere Suite" } } ]
+  }
+};
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+    <slot name="head">
+        <script type="application/ld+json" set:html={JSON.stringify(familyPolicySchema)} />
+    </slot>
+
+	<section class="families-hero">
+		<div class="container">
+			<h1>Rome with Kids? We've Got You Covered!</h1>
+			<p>Make your family trip to Rome comfortable and memorable. RediRomaBnB welcomes families with dedicated amenities and spacious accommodations.</p>
+		</div>
+	</section>
+
+	<section class="family-features container">
+		<h2>Why Families Choose Us</h2>
+		<div class="features-grid">
+			<div class="feature-item">
+				<img src="https://placehold.co/100x100/A2D9CE/31343C?text=Suite" alt="Icon representing spacious rooms" class="feature-icon">
+				<h3>Spacious Suites</h3>
+				<p>Our Trastevere Suite and other larger rooms offer ample space for families to relax, with options including kitchenettes for added convenience.</p>
+			</div>
+			<div class="feature-item">
+				<img src="https://placehold.co/100x100/FADBD8/31343C?text=Crib" alt="Icon representing baby crib" class="feature-icon">
+				<h3>Baby & Toddler Ready</h3>
+				<p>We provide complimentary cribs and high chairs upon request to make packing lighter and your stay easier. (Please request when booking).</p>
+			</div>
+			<div class="feature-item">
+				<img src="https://placehold.co/100x100/D2B4DE/31343C?text=Location" alt="Icon representing map location" class="feature-icon">
+				<h3>Convenient Location</h3>
+				<p>Situated near parks like Villa Pamphili and with easy access to kid-friendly attractions. We can provide tips for navigating Rome with children.</p>
+			</div>
+            <div class="feature-item">
+				<img src="https://placehold.co/100x100/FCF3CF/31343C?text=Tips" alt="Icon representing helpful tips" class="feature-icon">
+				<h3>Local Tips for Families</h3>
+				<p>From the best gelaterias to stroller-friendly routes and playgrounds, we're happy to share our local knowledge to help your family enjoy Rome.</p>
+			</div>
+		</div>
+	</section>
+
+    <section class="family-rooms container">
+        <h2>Recommended Rooms for Families</h2>
+        <p>Our <a href="/rooms/trastevere-suite">Trastevere Suite</a> is particularly popular with families due to its size and amenities. Please <a href="/contact">contact us</a> to discuss the best option for your family's needs.</p>
+        <div style="margin-top: 2rem; text-align:center;">
+             <a href="/rooms" class="cta-button">View All Rooms</a>
+         </div>
+    </section>
+
+    <section class="nearby-activities container">
+        <h2>Kid-Friendly Activities Nearby</h2>
+        <ul>
+            <li><strong class="activity-name">Villa Doria Pamphili:</strong> Rome's largest landscaped public park, perfect for picnics, walks, and letting kids run around. (Approx. distance/time)</li>
+            <li><strong class="activity-name">Explora Children's Museum of Rome:</strong> Interactive exhibits for various ages (Requires bus/taxi ride).</li>
+            <li><strong class="activity-name">Gianicolo Hill (Janiculum):</strong> Offers panoramic views of Rome and a traditional puppet show on weekends.</li>
+            <li><strong class="activity-name">Trastevere's Piazzas:</strong> Enjoy evening strolls, street performers (seasonal), and family-friendly dining.</li>
+            </ul>
+    </section>
+
+</Layout>
+
+<style>
+	.families-hero {
+		background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://placehold.co/1920x500/85C1E9/FFFFFF?text=Family+Fun+in+Rome+(Replace)') no-repeat center center/cover;
+		padding: 4rem 0;
+		text-align: center;
+		color: white;
+		margin-bottom: 3rem;
+	}
+	.families-hero h1 {
+		margin-bottom: 0.5em;
+        color: white;
+	}
+	.families-hero p {
+		font-size: 1.1rem;
+		max-width: 700px;
+		margin: 0 auto;
+	}
+
+    .family-features, .family-rooms, .nearby-activities {
+        padding-bottom: 3rem;
+    }
+
+    .family-features h2, .family-rooms h2, .nearby-activities h2 {
+        text-align: center;
+        margin-bottom: 2.5rem;
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        text-align: center;
+    }
+
+    .feature-item {
+        background-color: #f9f9f9;
+        padding: 2rem 1.5rem;
+        border-radius: 8px;
+        border: 1px solid #eee;
+    }
+
+    .feature-icon {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        margin: 0 auto 1rem auto;
+        background-color: var(--brandPrimary, #B8860B); /* Or use specific colors */
+        display: flex; /* Use flex to center text if using text placeholders */
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        color: white;
+    }
+     .feature-item img { /* If using actual image icons */
+         display: block; /* Override default img styles if needed */
+     }
+
+
+    .feature-item h3 {
+        margin-bottom: 0.75rem;
+        font-size: 1.3rem;
+    }
+
+    .family-rooms p {
+        text-align: center;
+        line-height: 1.7;
+        max-width: 650px;
+        margin: 0 auto;
+    }
+    .cta-button { /* Style reused from homepage */
+		display: inline-block;
+		background-color: var(--brandPrimary);
+		color: var(--textLight);
+		padding: 0.8rem 2rem;
+		border-radius: 50px;
+		font-weight: bold;
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
+		transition: background-color 0.3s ease, transform 0.2s ease;
+        text-decoration: none;
+	}
+	.cta-button:hover {
+		background-color: color-mix(in srgb, var(--brandPrimary) 90%, black);
+		text-decoration: none;
+		transform: translateY(-2px);
+	}
+
+
+    .nearby-activities ul {
+        list-style: none; /* Remove default bullets */
+        padding: 0;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    .nearby-activities li {
+        background-color: #fff;
+        border: 1px solid #eee;
+        padding: 1rem 1.5rem;
+        margin-bottom: 1rem;
+        border-radius: 6px;
+        line-height: 1.6;
+    }
+     .activity-name {
+        display: block; /* Make title take full width */
+        font-size: 1.1rem;
+        margin-bottom: 0.25rem;
+        color: var(--brandPrimary);
+     }
+
+</style>

@@ -1,0 +1,276 @@
+---
+// src/pages/contact.astro
+// Contact information and form for RediRomaBnB.
+
+import Layout from '../layouts/Layout.astro';
+
+// --- Page Meta Data ---
+const pageTitle = "Contact Us | RediRomaBnB";
+const pageDescription = "Get in touch with RediRomaBnB. Find our address, phone number, email, or use our contact form for inquiries about your stay in Rome.";
+
+// --- Contact Point Schema ---
+// Add this to the LodgingBusiness schema on location page or keep standalone
+const contactSchema = {
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  "name": "Contact RediRomaBnB",
+  "description": pageDescription,
+  "mainEntity": {
+      "@type": "LodgingBusiness",
+      "name": "RediRomaBnB",
+      "telephone": "[Your Phone Number]", // Add actual phone
+      "email": "[Your Email Address]", // Add actual email
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "[Your Street Address]",
+        "addressLocality": "Rome",
+        "postalCode": "[Your Postal Code]",
+        "addressCountry": "IT"
+      },
+      // Add opening hours if applicable
+      // "openingHoursSpecification": [ { "@type": "OpeningHoursSpecification", ... } ]
+  }
+};
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+    <slot name="head">
+        <script type="application/ld+json" set:html={JSON.stringify(contactSchema)} />
+    </slot>
+
+	<section class="contact-hero">
+		<div class="container">
+			<h1>Get In Touch</h1>
+			<p>Have questions or need assistance? We're here to help you plan your perfect Roman getaway.</p>
+		</div>
+	</section>
+
+	<section class="contact-content container">
+		<div class="contact-grid">
+			<div class="contact-info">
+				<h2>Contact Details</h2>
+				<p>Feel free to reach out via phone, email, or by filling out the contact form.</p>
+				<ul>
+					<li><strong><i class="icon-pin"></i> Address:</strong> {contactSchema.mainEntity.address.streetAddress}, {contactSchema.mainEntity.address.postalCode} Rome, Italy</li>
+					<li><strong><i class="icon-phone"></i> Phone:</strong> <a href={`tel:${contactSchema.mainEntity.telephone}`}>{contactSchema.mainEntity.telephone}</a></li>
+					<li><strong><i class="icon-email"></i> Email:</strong> <a href={`mailto:${contactSchema.mainEntity.email}`}>{contactSchema.mainEntity.email}</a></li>
+					</ul>
+                <div class="mini-map-placeholder">
+                     <img src="https://placehold.co/400x250/BDB/31343C?text=Mini+Map" alt="Small map showing location">
+                </div>
+			</div>
+
+			<div class="contact-form-container">
+				<h2>Send Us a Message</h2>
+                <form id="contact-form" class="contact-form" netlify netlify-honeypot="bot-field" data-netlify="true" method="POST">
+                     <p class="hidden">
+                        <label>Don’t fill this out if you’re human: <input name="bot-field" /></label>
+                    </p>
+                    <input type="hidden" name="form-name" value="contact-form" />
+
+					<div class="form-group">
+						<label for="name">Name</label>
+						<input type="text" id="name" name="name" required>
+					</div>
+					<div class="form-group">
+						<label for="email">Email</label>
+						<input type="email" id="email" name="email" required>
+					</div>
+                    <div class="form-group">
+						<label for="phone">Phone (Optional)</label>
+						<input type="tel" id="phone" name="phone">
+					</div>
+					<div class="form-group">
+						<label for="subject">Subject</label>
+						<input type="text" id="subject" name="subject" required>
+					</div>
+					<div class="form-group">
+						<label for="message">Message</label>
+						<textarea id="message" name="message" rows="5" required></textarea>
+					</div>
+					<button type="submit" class="submit-button">Send Message</button>
+				</form>
+                <div id="form-status"></div> </div>
+		</div>
+	</section>
+
+</Layout>
+
+<script>
+    // Very basic feedback for Netlify forms (can be enhanced)
+    const form = document.getElementById('contact-form');
+    const formStatus = document.getElementById('form-status');
+
+    if (form) {
+        // Check URL params for Netlify success state (simple approach)
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('form-success') === 'true') {
+            if (formStatus) {
+                formStatus.innerHTML = '<p style="color: green; border: 1px solid green; padding: 10px; border-radius: 4px;">Thank you! Your message has been sent successfully.</p>';
+                form.reset(); // Clear the form
+            }
+        }
+
+        // You might add JS validation here before submission
+        form.addEventListener('submit', (e) => {
+            // Optional: Add JS validation logic here
+            // e.preventDefault(); // Uncomment to stop default submission if doing AJAX/complex validation
+
+            // Optional: Show a 'sending' message
+             if (formStatus) formStatus.innerHTML = '<p>Sending...</p>';
+
+             // Redirect on success (if Netlify handles it)
+             // Set action="/contact?form-success=true" in the form tag for simple redirect feedback
+             form.action = "/contact?form-success=true";
+        });
+    }
+</script>
+
+
+<style>
+    /* Add simple icons using CSS pseudo-elements or an icon font/SVG library */
+    .icon-pin::before { content: '📍'; margin-right: 8px; }
+    .icon-phone::before { content: '📞'; margin-right: 8px; }
+    .icon-email::before { content: '📧'; margin-right: 8px; }
+    .icon-clock::before { content: '🕒'; margin-right: 8px; }
+
+
+	.contact-hero {
+		background-color: var(--brandSecondary, #F5F5DC);
+		padding: 3rem 0;
+		text-align: center;
+		margin-bottom: 3rem;
+	}
+	.contact-hero h1 {
+		margin-bottom: 0.5em;
+	}
+	.contact-hero p {
+		font-size: 1.1rem;
+		max-width: 700px;
+		margin: 0 auto;
+		color: var(--textDark, #333);
+        opacity: 0.9;
+	}
+
+    .contact-content {
+        padding-bottom: 3rem;
+    }
+
+    .contact-grid {
+        display: grid;
+        grid-template-columns: 1fr; /* Stack by default */
+        gap: 3rem;
+    }
+
+    .contact-info h2, .contact-form-container h2 {
+        margin-bottom: 1.5rem;
+        font-size: 1.8rem;
+    }
+
+    .contact-info ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .contact-info li {
+        margin-bottom: 1rem;
+        line-height: 1.6;
+        font-size: 1.05rem;
+        display: flex; /* Align icon and text */
+        align-items: flex-start;
+    }
+    .contact-info li strong {
+        display: inline-flex; /* Keep icon and text together */
+        align-items: center;
+        min-width: 80px; /* Adjust as needed for alignment */
+    }
+    .contact-info li a {
+        color: var(--brandPrimary);
+    }
+    .contact-info li a:hover {
+        text-decoration: underline;
+    }
+
+    .mini-map-placeholder {
+        margin-top: 2rem;
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid #eee;
+        max-width: 400px; /* Limit size */
+    }
+     .mini-map-placeholder img {
+        display: block;
+        width: 100%;
+     }
+
+
+    /* Form Styles */
+    .contact-form .form-group {
+        margin-bottom: 1.5rem;
+    }
+    .contact-form label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+        font-size: 0.9rem;
+    }
+    .contact-form input[type="text"],
+    .contact-form input[type="email"],
+    .contact-form input[type="tel"],
+    .contact-form textarea {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 1rem;
+        font-family: inherit;
+        transition: border-color 0.3s ease;
+    }
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+        border-color: var(--brandPrimary);
+        outline: none;
+        box-shadow: 0 0 0 2px color-mix(in srgb, var(--brandPrimary) 20%, transparent);
+    }
+    .contact-form textarea {
+        resize: vertical; /* Allow vertical resize */
+    }
+
+    .submit-button {
+        display: inline-block;
+		background-color: var(--brandPrimary);
+		color: var(--textLight);
+		padding: 0.8rem 2.5rem;
+		border-radius: 50px;
+        border: none;
+		font-weight: bold;
+        font-size: 1rem;
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
+		transition: background-color 0.3s ease, transform 0.2s ease;
+        cursor: pointer;
+    }
+    .submit-button:hover {
+		background-color: color-mix(in srgb, var(--brandPrimary) 90%, black);
+		transform: translateY(-2px);
+    }
+
+    /* For Netlify Honeypot */
+    .hidden {
+        position: absolute;
+        left: -5000px;
+    }
+
+    #form-status {
+        margin-top: 1.5rem;
+        font-weight: bold;
+    }
+
+
+    @media (min-width: 768px) {
+        .contact-grid {
+            grid-template-columns: 1fr 1fr; /* Side-by-side info and form */
+            gap: 4rem; /* Increase gap */
+        }
+    }
+</style>

@@ -1,0 +1,29 @@
+---
+// src/components/BookingLoadingFallback.astro
+// A simple component to display as a fallback while the booking section loads.
+---
+<div class="container text-center booking-loading">
+    Loading Booking Options...
+</div>
+
+<style>
+    /* Styles for the fallback loading message */
+    .booking-loading {
+        padding: 4rem 1rem; /* Provide some spacing */
+        font-style: italic; /* Italicize the text */
+        color: #666; /* A muted text color */
+        border: 1px dashed #ccc; /* Optional: visual cue */
+        border-radius: 8px;
+        background-color: #f9f9f9; /* Light background */
+    }
+    .text-center { /* Ensure text-center is defined if not globally available */
+        text-align: center;
+    }
+    .container { /* Ensure container is defined if not globally available */
+        max-width: 1140px;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+</style>
