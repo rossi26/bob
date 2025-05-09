@@ -6,9 +6,6 @@ import Layout from '../layouts/Layout.astro';
 import RoomCard from '../components/RoomCard.astro';
 import SeasonalSlot from '../components/SeasonalSlot.astro';
 import WhyBookDirect from '../components/WhyBookDirect.astro';
-import GuestJourney from '../components/GuestJourney.astro';
-import { ClientOnly } from 'astro:components';
-import BookingLoadingFallback from '../components/BookingLoadingFallback.astro'; // Import the new fallback component
 
 // --- Mock Data (Use updated room names/details) ---
 const featuredRooms = [
@@ -104,7 +101,6 @@ const heroImages = {
 		</div>
 	</section>
 
-    <GuestJourney />
 
 	<section class="seasonal-section container">
          <h2 class="text-center">Rome This Season</h2>
