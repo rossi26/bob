@@ -25,9 +25,9 @@ const {
 // --- NEW THEME ---
 const theme = {
 	colors: {
-		primary: '#4A6B63',     // Roman olive green
-		accent: '#DAA520',      // Terracotta gold
-		background: '#F8F5F2',  // Antique parchment white
+		primary: '#96adc9',     // Roman olive green
+		accent: '#AF8D64',      // Terracotta gold
+		background: '#efe1cb',  // Antique parchment white
 		textDark: '#333333',
 		textLight: '#FFFFFF'
 	},
@@ -48,6 +48,11 @@ const theme = {
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta name="description" content={description} />
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" type="text/css" href="https://data.krossbooking.com/widget/v6/lottavorediroma/2.css" media="all" />
+    <script type='text/javascript' defer='defer' src='https://data.krossbooking.com/widget/v6/lottavorediroma/2.js'></script>
 
 	{/* Preconnect/Prefetch */}
 	<link rel="preconnect" href="https://fonts.googleapis.com">
@@ -118,10 +123,13 @@ const theme = {
 	<header class="main-header">
         <div class="container header-content">
             <div class="logo">
-                <a href="/" aria-label="Redi Roma BnB Homepage">Redi Roma BnB</a>
+                <a href="/" aria-label="Re di Roma BnB Homepage">
+                    <img src="/src/assets/logo-280x87.png" alt="Logo B&B L'Ottavo re di roma" title="" media-simple="true" style="height: 3.8rem;">
+                </a>
             </div>
             <nav class="main-nav" aria-label="Main Navigation">
                 <ul>
+                    <li><a href="/">Home</a></li>
                     <li><a href="/rooms">Rooms</a></li>
                     <li><a href="/location">Location</a></li>
                     <li><a href="/families">Families</a></li>

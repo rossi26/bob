@@ -15,7 +15,7 @@ const featuredRooms = [
 ];
 
 // --- Seasonal Content Data (Update as needed) ---
-const seasonContent = { title: "Summer Gelato Guide", description: "Discover the best gelato near Redi Roma BnB!", image: "https://placehold.co/800x400/FFFACD/31343C?text=Gelato+Time", ctaText: "Find Best Gelato", ctaLink: "/blog/best-gelato-shops" };
+const seasonContent = { title: "Summer Gelato Guide", description: "Discover the best gelato near Redi Roma BnB!", image: "https://placehold.co/800x400/96adc9/31343C?text=Gelato+Time", ctaText: "Find Best Gelato", ctaLink: "/blog/best-gelato-shops" };
 
 // --- Page Meta Data & Schema ---
 const pageTitle = "Redi Roma BnB | Affordable & Charming B&B near Colosseum";
@@ -41,20 +41,22 @@ const homeSchemaData = {
 
 // Hero Image Paths (Replace with your actual optimized image paths)
 const heroImages = {
-    avif: '/images/hero-colosseum-view.avif',
-    webp: '/images/hero-colosseum-view.webp',
-    jpeg: '/images/hero-colosseum-view.jpg', // Fallback
-    alt: 'View towards the Colosseum from near Redi Roma BnB'
+    // avif: '/images/hero-colosseum-view.avif',
+    // webp: '/images/hero-colosseum-view.webp',
+    jpeg: '/src/assets/vista-b-b-l-ottavo-re-di-roma.jpg', // Fallback
+    alt: 'Vista dal B&B l Ottavo Re di Roma'
 };
 ---
 
 <Layout title={pageTitle} description={pageDescription} schemaType="LodgingBusiness" schemaData={homeSchemaData}>
 
 	<section class="hero-section">
-		<picture>
+		<picture class="image-container-1">
+			<div class="veil"></div> <!-- Semi-transparent layer -->
+
             <source srcset={heroImages.avif} type="image/avif" />
             <source srcset={heroImages.webp} type="image/webp" />
-            <img
+            <img 
                 src={heroImages.jpeg}
                 alt={heroImages.alt}
                 class="hero-background-image"
@@ -68,8 +70,10 @@ const heroImages = {
 		<div class="hero-content container">
 			<h1>Your Roman Charm Near the Colosseum</h1>
 			<p class="subtitle">Affordable style, steps from history. Book direct for exclusive perks.</p>
-			<a href="#booking-section" class="button button-accent">Check Availability</a>
 		</div>
+		<div class="kross-container"></div>
+
+
 	</section>
 
 	<section class="intro-section container text-center">
@@ -131,11 +135,11 @@ const heroImages = {
         </a>
 	</section>
 
-    <section class="speed-comparison container text-center">
+    <!-- <section class="speed-comparison container text-center">
         <h2>Tired of Slow Hotel Sites?</h2>
         <p>Our modern website loads lightning fast, especially on mobile, saving you time and frustration compared to older sites like Hotel BB Roma. Experience the difference!</p>
         <div class="speed-graphic-placeholder">[Graphic comparing load times]</div>
-    </section>
+    </section> -->
 
    
 
@@ -151,12 +155,14 @@ const heroImages = {
 		position: relative;
 		height: 75vh; /* Adjust height */
 		min-height: 500px;
+
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		text-align: center;
 		color: var(--color-text-light);
 		overflow: hidden;
+		flex-direction: column;
 	}
 
 	.hero-background-image {
@@ -166,7 +172,7 @@ const heroImages = {
 		width: 100%;
 		height: 100%;
         object-fit: cover; /* Cover the area */
-		z-index: 1;
+		z-index: -1;
 	}
     .hero-overlay {
         position: absolute;
@@ -184,6 +190,12 @@ const heroImages = {
 		padding: 2rem;
         max-width: 700px;
 	}
+	.kross-container {
+		z-index: 3;
+		padding: 2rem;
+        width: 70%;
+	}
+	
 
 	.hero-content h1 {
 		font-size: clamp(2.5rem, 5vw, 3.5rem); /* Responsive font size */
@@ -230,6 +242,19 @@ const heroImages = {
 		margin: 0 0.75rem;
         white-space: nowrap;
 	}
+	
+
+
+.veil {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.3); 
+/* White veil with 30% opacity */
+}
+
 
 	/* --- Room Grid --- */
 	.room-grid {
