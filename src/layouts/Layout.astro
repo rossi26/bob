@@ -3,6 +3,7 @@
 // Base layout - V2 Debugging Stack Overflow - Schema component REMOVED
 
 import FloatingBookButton from '../components/FloatingBookButton.astro';
+import logo from '../assets/logo-280x87.png';
 // import SchemaMarkup from '../components/SchemaMarkup.astro'; // Temporarily commented out
 
 // Props for title and description
@@ -124,7 +125,7 @@ const theme = {
         <div class="container header-content">
             <div class="logo">
                 <a href="/" aria-label="Re di Roma BnB Homepage">
-                    <img src="/src/assets/logo-280x87.png" alt="Logo B&B L'Ottavo re di roma" title="" media-simple="true" style="height: 3.8rem;">
+                    <img src={logo.src} alt="Logo B&B L'Ottavo re di roma" title="" media-simple="true" style="height: 3.8rem;">
                 </a>
             </div>
             <nav class="main-nav" aria-label="Main Navigation">

@@ -1,12 +1,11 @@
 ---
 // src/pages/index.astro
 // Homepage - V2 with new theme, content sections, optimizations - Using Fallback Component
-
+import sfondohome from '../assets/vista-b-b-l-ottavo-re-di-roma.jpg';
 import Layout from '../layouts/Layout.astro';
 import RoomCard from '../components/RoomCard.astro';
 import SeasonalSlot from '../components/SeasonalSlot.astro';
 import WhyBookDirect from '../components/WhyBookDirect.astro';
-import sfondohome from '../assets/logo-280x87.png'
 
 // --- Mock Data (Use updated room names/details) ---
 const featuredRooms = [
@@ -40,32 +39,23 @@ const homeSchemaData = {
      ]
 };
 
-// Hero Image Paths (Replace with your actual optimized image paths)
-const heroImages = {
-    // avif: '/images/hero-colosseum-view.avif',
-    // webp: '/images/hero-colosseum-view.webp',
-    jpeg: '/src/assets/vista-b-b-l-ottavo-re-di-roma.jpg', // Fallback
-    alt: 'Vista dal B&B l Ottavo Re di Roma'
-};
 ---
 
 <Layout title={pageTitle} description={pageDescription} schemaType="LodgingBusiness" schemaData={homeSchemaData}>
 
 	<section class="hero-section">
-		<picture class="image-container-1">
+		<div class="image-container-1">
 			<div class="veil"></div> <!-- Semi-transparent layer -->
-
-            <source srcset={heroImages.avif} type="image/avif" />
-            <source srcset={heroImages.webp} type="image/webp" />
-            <img src={sfondohome}
-                alt={heroImages.alt}
+           
+			<img src={sfondohome.src}
+                alt="Vista dal B&B l Ottavo Re di Roma"
                 class="hero-background-image"
                 loading="eager"
                 fetchpriority="high"
                 width="1920"
                 height="700"
             />
-        </picture>
+        </div>
 		<div class="hero-overlay"></div>
 		<div class="hero-content container">
 			<h1>Your Roman Charm Near the Colosseum</h1>
