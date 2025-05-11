@@ -6,6 +6,7 @@ import Layout from '../layouts/Layout.astro';
 import RoomCard from '../components/RoomCard.astro';
 import SeasonalSlot from '../components/SeasonalSlot.astro';
 import WhyBookDirect from '../components/WhyBookDirect.astro';
+import sfondohome from '../assets/logo-280x87.png'
 
 // --- Mock Data (Use updated room names/details) ---
 const featuredRooms = [
@@ -56,8 +57,7 @@ const heroImages = {
 
             <source srcset={heroImages.avif} type="image/avif" />
             <source srcset={heroImages.webp} type="image/webp" />
-            <img 
-                src={heroImages.jpeg}
+            <img src={sfondohome}
                 alt={heroImages.alt}
                 class="hero-background-image"
                 loading="eager"
